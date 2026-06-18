@@ -6,5 +6,4 @@ data
 .devenv
 .direnv
 .git
-mockups
 *.log
