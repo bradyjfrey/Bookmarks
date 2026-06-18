@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Shell } from "@/components/Shell";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { getCurrentUser } from "@/lib/auth";
@@ -11,9 +12,10 @@ const BOOKMARKLET =
 
 export default async function Page() {
   const user = await getCurrentUser();
+  if (!user) redirect("/login?redirect=/settings");
 
   return (
-    <Shell title="Settings">
+    <Shell crumb="Settings">
       <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-2xl space-y-8">
         <section>
           <h2 className="text-sm font-semibold text-ink">Appearance</h2>

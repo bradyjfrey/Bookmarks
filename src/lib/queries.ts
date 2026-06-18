@@ -31,17 +31,21 @@ export function getCounts(includePrivate: boolean) {
       `SELECT count(*) c FROM bookmarks b WHERE deleted_at IS NULL${vis}
        AND NOT EXISTS (SELECT 1 FROM bookmark_tags bt WHERE bt.bookmark_id = b.id)`,
     ),
-    tags: one("SELECT count(*) c FROM tags"),
+    tags: one(
+      `SELECT count(DISTINCT bt.tag_id) c FROM bookmark_tags bt
+       JOIN bookmarks b ON b.id = bt.bookmark_id AND b.deleted_at IS NULL${vis}`,
+    ),
   };
 }
 
-export function getTopTags(limit = 20) {
+export function getTopTags(limit = 20, includePrivate = false) {
+  const vis = includePrivate ? "" : " AND b.private = 0";
   return raw
     .prepare(
       `SELECT t.name, t.slug, count(*) AS count
        FROM bookmark_tags bt
        JOIN tags t ON t.id = bt.tag_id
-       JOIN bookmarks b ON b.id = bt.bookmark_id AND b.deleted_at IS NULL
+       JOIN bookmarks b ON b.id = bt.bookmark_id AND b.deleted_at IS NULL${vis}
        GROUP BY t.id ORDER BY count DESC, t.name LIMIT ?`,
     )
     .all(limit) as { name: string; slug: string; count: number }[];
@@ -117,13 +121,14 @@ export function getTagNames(): string[] {
   );
 }
 
-export function getAllTags() {
+export function getAllTags(includePrivate = false) {
+  const vis = includePrivate ? "" : " AND b.private = 0";
   return raw
     .prepare(
       `SELECT t.name, t.slug, count(*) AS count
        FROM bookmark_tags bt
        JOIN tags t ON t.id = bt.tag_id
-       JOIN bookmarks b ON b.id = bt.bookmark_id AND b.deleted_at IS NULL
+       JOIN bookmarks b ON b.id = bt.bookmark_id AND b.deleted_at IS NULL${vis}
        GROUP BY t.id ORDER BY count DESC, t.name`,
     )
     .all() as { name: string; slug: string; count: number }[];

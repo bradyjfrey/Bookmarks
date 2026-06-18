@@ -9,7 +9,7 @@ export default async function Page() {
   const includePrivate = Boolean(await getCurrentUser());
   const rows = listBookmarks({ filter: "starred", includePrivate, limit: 200 });
   return (
-    <Shell title="Starred">
+    <Shell crumb="Starred">
       <BookmarkList rows={rows} canEdit={includePrivate} empty="No starred bookmarks yet — tap the star on any bookmark to favorite it." />
     </Shell>
   );

@@ -14,14 +14,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const tags = splitTags(b.tags);
 
   return (
-    <Shell
-      title={
-        <>
-          <Link href="/" className="hover:text-ink">All Bookmarks</Link>{" "}
-          <span className="text-ink-faint">/ #{b.id}</span>
-        </>
-      }
-    >
+    <Shell crumb={`#${b.id}`}>
       <article className="px-4 sm:px-6 lg:px-8 py-8 max-w-2xl">
         <div className="text-sm text-ink-soft mb-2">{domain(b.url)}</div>
         <h2 className="text-2xl font-semibold tracking-tight text-ink leading-snug flex items-start gap-2">

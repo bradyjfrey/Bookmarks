@@ -25,7 +25,7 @@ export default async function Home({
   const pages = Math.max(1, Math.ceil(total / PER_PAGE));
 
   return (
-    <Shell title="All Bookmarks">
+    <Shell>
       <BookmarkList rows={rows} canEdit={includePrivate} empty="No bookmarks yet." />
       <Pagination page={page} pages={pages} basePath="/" />
     </Shell>

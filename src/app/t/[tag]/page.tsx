@@ -9,7 +9,7 @@ export default async function Page({ params }: { params: Promise<{ tag: string }
   const includePrivate = Boolean(await getCurrentUser());
   const rows = listBookmarksByTag(name, { includePrivate, limit: 200 });
   return (
-    <Shell title={<>Tag · {name}</>}>
+    <Shell crumb={<>Tag · {name}</>}>
       <BookmarkList rows={rows} canEdit={includePrivate} empty={`No bookmarks tagged "${name}".`} />
     </Shell>
   );

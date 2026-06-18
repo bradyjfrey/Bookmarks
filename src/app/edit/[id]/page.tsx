@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (!b) notFound();
 
   return (
-    <Shell title={<>Edit Bookmark <span className="text-ink-faint">· #{b.id}</span></>}>
+    <Shell crumb={<>Edit · #{b.id}</>}>
       <div className="px-4 sm:px-6 lg:px-8 py-6">
         <BookmarkForm
           action={updateBookmarkAction}

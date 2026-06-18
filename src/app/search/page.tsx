@@ -20,7 +20,7 @@ export default async function Page({
     "Search"
   );
   return (
-    <Shell title={title} query={q}>
+    <Shell crumb={title} query={q}>
       <BookmarkList
         rows={rows}
         canEdit={includePrivate}

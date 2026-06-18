@@ -9,7 +9,7 @@ export default async function Page() {
   const user = await getCurrentUser();
   const rows = user ? listBookmarks({ filter: "private", includePrivate: true, limit: 200 }) : [];
   return (
-    <Shell title="Private">
+    <Shell crumb="Private">
       <BookmarkList
         rows={rows}
         canEdit={Boolean(user)}

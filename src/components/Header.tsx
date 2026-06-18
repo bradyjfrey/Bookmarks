@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Search, Plus, Menu } from "./icons";
 
 /** Sticky top bar: global search + add button, then the context-title strip. */
-export function Header({ title, query = "" }: { title: React.ReactNode; query?: string }) {
+export function Header({ crumb, query = "" }: { crumb?: React.ReactNode; query?: string }) {
   return (
     <div className="sticky top-0 z-10 bg-surface border-b border-border">
       <div className="px-4 sm:px-6 lg:px-8 pt-3 pb-2.5 flex items-center gap-2">
@@ -26,7 +26,10 @@ export function Header({ title, query = "" }: { title: React.ReactNode; query?: 
         </Link>
       </div>
       <div className="px-4 sm:px-6 lg:px-8 pt-2.5 pb-2.5 border-t border-border flex items-center justify-between">
-        <h1 className="text-[13px] font-semibold uppercase tracking-wide text-ink-soft">{title}</h1>
+        <h1 className="text-[13px] font-semibold uppercase tracking-wide text-ink-soft">
+          <Link href="/" className="hover:text-ink">Brady&apos;s Bookmarks</Link>
+          {crumb ? <> · {crumb}</> : null}
+        </h1>
         <label
           htmlFor="nav"
           className="lg:hidden p-1.5 -mr-1.5 rounded-md text-ink-soft hover:text-ink hover:bg-border-soft cursor-pointer"

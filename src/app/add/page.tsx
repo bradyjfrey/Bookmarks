@@ -15,7 +15,7 @@ export default async function Page({
   if (!(await getCurrentUser())) redirect("/login?redirect=/add");
   const sp = await searchParams; // bookmarklet prefill: /add?url=…&title=…
   return (
-    <Shell title="Add Bookmark">
+    <Shell crumb="Add">
       <div className="px-4 sm:px-6 lg:px-8 py-6">
         <BookmarkForm
           action={createBookmarkAction}

@@ -13,7 +13,7 @@ export default async function Page() {
   const rows = listTrash();
 
   return (
-    <Shell title="Trash">
+    <Shell crumb="Trash">
       {rows.length > 0 && (
         <div className="px-4 sm:px-6 lg:px-8 pt-4 pb-1 flex items-center justify-between gap-3">
           <p className="text-xs text-ink-faint">Deleted bookmarks stay here until you empty the trash. Nothing auto-purges.</p>

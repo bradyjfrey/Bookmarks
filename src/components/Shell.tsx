@@ -9,23 +9,23 @@ import { Sidebar } from "./Sidebar";
  * null until auth lands (public view).
  */
 export async function Shell({
-  title,
+  crumb,
   query,
   children,
 }: {
-  title: React.ReactNode;
+  crumb?: React.ReactNode;
   query?: string;
   children: React.ReactNode;
 }) {
   const user = await getCurrentUser();
   const includePrivate = Boolean(user);
   const counts = getCounts(includePrivate);
-  const topTags = getTopTags(20);
+  const topTags = getTopTags(20, includePrivate);
 
   return (
     <div className="flex min-h-screen">
       <div className="flex-1 min-w-0 flex flex-col">
-        <Header title={title} query={query} />
+        <Header crumb={crumb} query={query} />
         <main className="flex-1">{children}</main>
       </div>
 

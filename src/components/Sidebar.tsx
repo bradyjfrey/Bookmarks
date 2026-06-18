@@ -64,9 +64,11 @@ export function Sidebar({
               </Link>
             )}
           </div>
-          <Link href="/settings" className="p-1.5 rounded-md text-ink-soft hover:text-ink hover:bg-border-soft" title="Settings">
-            <Gear className="w-4 h-4" />
-          </Link>
+          {user && (
+            <Link href="/settings" className="p-1.5 rounded-md text-ink-soft hover:text-ink hover:bg-border-soft" title="Settings">
+              <Gear className="w-4 h-4" />
+            </Link>
+          )}
         </div>
       </div>
 
