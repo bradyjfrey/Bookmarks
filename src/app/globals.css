@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: `dark:` utilities respond to a `.dark` on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #fbfbfa;          /* content backdrop */
+  --surface: #ffffff;     /* list, cards, inputs */
+  --sidebar: #f7f7f6;     /* rail */
+  --ink: #18181b;         /* primary text */
+  --ink-soft: #52525b;    /* secondary */
+  --ink-faint: #a1a1aa;   /* tertiary */
+  --border: #e4e4e7;      /* dividers / borders */
+  --border-soft: #f4f4f5; /* hover fills */
+  --accent: #4f46e5;      /* indigo-600 */
+  --accent-soft: #eef2ff; /* indigo-50 */
+  --cubs: #0e3386;        /* add / save */
+  --cubs-dark: #0b285f;
+  --active: #d0d0d0;      /* active nav pill */
+  --priv: #e4e4e7;        /* private row */
+  --priv-h: #d4d4d8;
+}
+
+.dark {
+  --bg: #1a1a1c;
+  --surface: #121214;     /* list/content — black, darkest */
+  --sidebar: #26262a;     /* rail — gray, lighter than list */
+  --ink: #e9e9ec;
+  --ink-soft: #9e9ea6;
+  --ink-faint: #6c6c75;
+  --border: #2a2a30;
+  --border-soft: #232328;
+  --accent: #818cf8;      /* indigo-400 */
+  --accent-soft: #2f2f52;
+  --cubs: #2563eb;
+  --cubs-dark: #1d4ed8;
+  --active: #3f3f46;      /* zinc-700 */
+  --priv: #27272a;        /* zinc-800 */
+  --priv-h: #3f3f46;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sidebar: var(--sidebar);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-cubs: var(--cubs);
+  --color-cubs-dark: var(--cubs-dark);
+  --color-active: var(--active);
+  --color-priv: var(--priv);
+  --color-priv-h: var(--priv-h);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Noto Sans", "PingFang SC", "Hiragino Sans",
+    "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Single-line truncation helper used in list rows. */
+.truncate-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Accent focus ring for inputs. */
+.focus-accent:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}

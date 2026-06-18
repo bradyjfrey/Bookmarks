@@ -1,0 +1,7 @@
+# better-sqlite3 needs its install script (fetches the prebuilt native binary).
+# Everything else stays blocked by pnpm's build sandbox.
+allowBuilds:
+  better-sqlite3: true
+  esbuild: false
+  sharp: false
+  unrs-resolver: false

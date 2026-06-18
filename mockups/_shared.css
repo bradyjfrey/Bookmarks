@@ -1,0 +1,61 @@
+/* Shared styling for Bookmarks mockups.
+   Palette is plain CSS variables (full color values) so the Tailwind Play-CDN
+   resolves them the same way it resolves the body color below. The config maps
+   each color name to var(--token); toggling `.dark` on <html> reskins
+   everything. Light = neutral zinc + indigo; dark = Reeder-style (black list,
+   gray sidebar). */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #FBFBFA;           /* content backdrop */
+  --surface: #FFFFFF;      /* list, cards, inputs */
+  --sidebar: #F7F7F6;      /* rail */
+  --ink: #18181B;          /* primary text */
+  --ink-soft: #52525B;     /* secondary text */
+  --ink-faint: #A1A1AA;    /* tertiary text */
+  --border: #E4E4E7;       /* dividers / borders */
+  --border-soft: #F4F4F5;  /* hover fills */
+  --accent: #4F46E5;       /* indigo-600 */
+  --accent-soft: #EEF2FF;  /* indigo-50 */
+}
+
+.dark {
+  --bg: #1A1A1C;
+  --surface: #121214;      /* list/content — black, darkest */
+  --sidebar: #26262A;      /* rail — gray, lighter than list */
+  --ink: #E9E9EC;
+  --ink-soft: #9E9EA6;
+  --ink-faint: #6C6C75;
+  --border: #2A2A30;
+  --border-soft: #232328;
+  --accent: #818CF8;       /* indigo-400 */
+  --accent-soft: #2F2F52;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC',
+    'Hiragino Sans', 'Microsoft YaHei', sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+.truncate-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.focus-accent:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}

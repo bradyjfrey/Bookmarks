@@ -1,0 +1,85 @@
+"use server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { requireUser } from "@/lib/auth";
+import * as m from "@/lib/mutations";
+import { fetchMetadata } from "@/lib/metadata";
+
+const str = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
+const on = (fd: FormData, k: string) => fd.get(k) === "on";
+const revalidateAll = () => revalidatePath("/", "layout");
+
+export async function createBookmarkAction(formData: FormData) {
+  await requireUser();
+  const url = str(formData, "url");
+  if (!url) return;
+  let title: string | null = str(formData, "title") || null;
+  let description: string | null = str(formData, "description") || null;
+  if (!title || !description) {
+    const meta = await fetchMetadata(url);
+    title = title || meta.title;
+    description = description || meta.description;
+  }
+  m.createBookmark({
+    url,
+    title,
+    description,
+    tags: m.parseTags(str(formData, "tags")),
+    private: on(formData, "private"),
+    starred: on(formData, "starred"),
+  });
+  revalidateAll();
+  redirect("/");
+}
+
+export async function updateBookmarkAction(formData: FormData) {
+  await requireUser();
+  const id = Number(formData.get("id"));
+  m.updateBookmark(id, {
+    url: str(formData, "url"),
+    title: str(formData, "title") || null,
+    description: str(formData, "description") || null,
+    tags: m.parseTags(str(formData, "tags")),
+    private: on(formData, "private"),
+    starred: on(formData, "starred"),
+  });
+  revalidateAll();
+  redirect(`/b/${id}`);
+}
+
+export async function toggleStarAction(formData: FormData) {
+  await requireUser();
+  m.toggleStarred(Number(formData.get("id")));
+  revalidateAll();
+}
+
+export async function togglePrivateAction(formData: FormData) {
+  await requireUser();
+  m.togglePrivate(Number(formData.get("id")));
+  revalidateAll();
+}
+
+export async function deleteBookmarkAction(formData: FormData) {
+  await requireUser();
+  m.softDelete(Number(formData.get("id")));
+  revalidateAll();
+}
+
+export async function restoreBookmarkAction(formData: FormData) {
+  await requireUser();
+  m.restore(Number(formData.get("id")));
+  revalidateAll();
+}
+
+export async function purgeBookmarkAction(formData: FormData) {
+  await requireUser();
+  m.purge(Number(formData.get("id")));
+  revalidateAll();
+}
+
+export async function emptyTrashAction() {
+  await requireUser();
+  m.emptyTrash();
+  revalidateAll();
+  redirect("/trash");
+}
