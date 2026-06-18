@@ -105,6 +105,43 @@ export function purge(id: number) {
   raw.prepare("DELETE FROM bookmarks_fts WHERE rowid = ?").run(id);
 }
 
+/** Import an array of bookmarks (Pinboard export or our own export shape). */
+export function importItems(items: Record<string, unknown>[]): { added: number; skipped: number } {
+  let added = 0;
+  let skipped = 0;
+  const findUrl = raw.prepare("SELECT 1 FROM bookmarks WHERE url = ?");
+  const ins = raw.prepare(
+    `INSERT INTO bookmarks (url, title, description, private, starred, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+  );
+  raw.transaction(() => {
+    for (const row of items) {
+      const it = row as Record<string, unknown>;
+      const url = (it.href ?? it.url) as string | undefined;
+      if (!url || findUrl.get(url)) {
+        skipped++;
+        continue;
+      }
+      const pinboard = it.href != null; // Pinboard: description=title, extended=note
+      const title = ((pinboard ? it.description : it.title) as string) || null;
+      const note = ((pinboard ? it.extended : it.description) as string) || null;
+      const tagStr =
+        typeof it.tags === "string" ? it.tags : Array.isArray(it.tags) ? it.tags.join(" ") : "";
+      const names = tagStr.split(/\s+/).filter(Boolean);
+      const isPrivate = pinboard ? it.shared === "no" : Boolean(it.private);
+      const starred = pinboard ? false : Boolean(it.starred);
+      const created = pinboard
+        ? Math.floor(Date.parse(String(it.time ?? "")) / 1000) || now()
+        : Number(it.created_at) || now();
+      const id = Number(ins.run(url, title, note, isPrivate ? 1 : 0, starred ? 1 : 0, created, created).lastInsertRowid);
+      setTags(id, names);
+      syncFts(id);
+      added++;
+    }
+  })();
+  return { added, skipped };
+}
+
 export function emptyTrash(): number {
   const ids = raw.prepare("SELECT id FROM bookmarks WHERE deleted_at IS NOT NULL").all() as { id: number }[];
   raw.transaction(() => ids.forEach(({ id }) => purge(id)))();

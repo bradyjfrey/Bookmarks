@@ -77,6 +77,22 @@ export async function purgeBookmarkAction(formData: FormData) {
   revalidateAll();
 }
 
+export async function importAction(formData: FormData) {
+  await requireUser();
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) return;
+  let items: unknown;
+  try {
+    items = JSON.parse(await file.text());
+  } catch {
+    return;
+  }
+  if (!Array.isArray(items)) return;
+  m.importItems(items as Record<string, unknown>[]);
+  revalidateAll();
+  redirect("/");
+}
+
 export async function emptyTrashAction() {
   await requireUser();
   m.emptyTrash();

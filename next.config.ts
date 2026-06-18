@@ -1,9 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // better-sqlite3 is a native addon; keep it out of the bundle so the .node
-  // binary loads at runtime instead of being traced/bundled by Turbopack/Webpack.
+  // Self-contained server bundle for the Docker image.
+  output: "standalone",
+  // better-sqlite3 is a native addon — don't bundle it.
   serverExternalPackages: ["better-sqlite3"],
+  // The import action receives an uploaded JSON file (Pinboard exports run ~2MB).
+  experimental: {
+    serverActions: { bodySizeLimit: "8mb" },
+  },
+  // node-file-trace can't follow bindings' runtime .node lookup — include it explicitly
+  // so the standalone output ships the compiled binary.
+  outputFileTracingIncludes: {
+    "/**": [
+      "./node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3/build/Release/*.node",
+    ],
+  },
 };
 
 export default nextConfig;

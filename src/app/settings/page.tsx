@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Shell } from "@/components/Shell";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { getCurrentUser } from "@/lib/auth";
+import { importAction } from "@/lib/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -60,12 +61,26 @@ export default async function Page() {
 
         <section>
           <h2 className="text-sm font-semibold text-ink">Data</h2>
-          <p className="mt-0.5 text-[13px] text-ink-soft">Export a full JSON backup of all bookmarks and tags.</p>
+          <p className="mt-0.5 text-[13px] text-ink-soft">Export a full JSON backup, or import a Pinboard / Bookmarks JSON file (dedupes by URL).</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <a href="/api/export" className="inline-flex items-center gap-2 h-9 px-3 rounded-md border border-border text-sm font-medium text-ink hover:bg-border-soft">
               Export JSON
             </a>
           </div>
+          {user && (
+            <form action={importAction} className="mt-3 flex flex-wrap items-center gap-2">
+              <input
+                type="file"
+                name="file"
+                accept="application/json,.json"
+                required
+                className="text-sm text-ink-soft file:mr-3 file:rounded-md file:border file:border-border file:bg-surface file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-ink hover:file:bg-border-soft"
+              />
+              <button type="submit" className="h-9 px-3 rounded-md bg-cubs text-white text-sm font-medium hover:bg-cubs-dark">
+                Import
+              </button>
+            </form>
+          )}
         </section>
       </div>
     </Shell>
