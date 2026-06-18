@@ -8,13 +8,14 @@ import {
   getOAuthEnv,
   hashState,
   safeRedirect,
+  appOrigin,
 } from "@/lib/googleOAuth";
 import { createSession } from "@/lib/session";
 import { isAllowed } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   const c = await cookies();
-  const origin = req.nextUrl.origin;
+  const origin = appOrigin();
   const code = req.nextUrl.searchParams.get("code");
   const state = req.nextUrl.searchParams.get("state");
   const expected = c.get(STATE_COOKIE)?.value;

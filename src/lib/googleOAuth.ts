@@ -25,3 +25,14 @@ export function safeRedirect(target: string | null | undefined): string {
   if (target && target.startsWith("/") && !target.startsWith("//")) return target;
   return "/";
 }
+
+/**
+ * The app's public origin. Behind a reverse proxy (Traefik) the request's own
+ * origin resolves to the container bind address (0.0.0.0:3000), so derive it
+ * from GOOGLE_REDIRECT_URI (which is already the correct public URL) instead.
+ */
+export function appOrigin(): string {
+  if (process.env.APP_ORIGIN) return process.env.APP_ORIGIN.replace(/\/$/, "");
+  if (process.env.GOOGLE_REDIRECT_URI) return new URL(process.env.GOOGLE_REDIRECT_URI).origin;
+  return "http://localhost:3001";
+}
