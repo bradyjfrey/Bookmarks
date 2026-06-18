@@ -1,4 +1,5 @@
 "use client";
+import type { ComponentType } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -6,14 +7,21 @@ import { List, Star, Lock, TagOff, Trash, Gear } from "./icons";
 
 type Counts = { all: number; starred: number; private: number; untagged: number; tags: number };
 type TopTag = { name: string; slug: string; count: number };
+type NavItem = {
+  key: string;
+  href: string;
+  label: string;
+  Icon: ComponentType<{ className?: string }>;
+  ownerOnly?: boolean;
+};
 
-const NAV = [
+const NAV: NavItem[] = [
   { key: "all", href: "/", label: "All Bookmarks", Icon: List },
   { key: "starred", href: "/starred", label: "Starred", Icon: Star },
-  { key: "private", href: "/private", label: "Private", Icon: Lock },
+  { key: "private", href: "/private", label: "Private", Icon: Lock, ownerOnly: true },
   { key: "untagged", href: "/untagged", label: "Untagged", Icon: TagOff },
-  { key: "trash", href: "/trash", label: "Trash", Icon: Trash },
-] as const;
+  { key: "trash", href: "/trash", label: "Trash", Icon: Trash, ownerOnly: true },
+];
 
 function activeKey(pathname: string): string {
   if (pathname === "/") return "all";
@@ -75,7 +83,7 @@ export function Sidebar({
       <div className="flex-1 overflow-y-auto px-3 pt-5 pb-3">
         <div className="px-1 pb-1 text-[11px] font-semibold uppercase tracking-wide text-ink-soft">Browse</div>
         <nav className="flex flex-col gap-0.5">
-          {NAV.map(({ key, href, label, Icon }) => {
+          {NAV.filter((it) => user || !it.ownerOnly).map(({ key, href, label, Icon }) => {
             const on = active === key;
             return (
               <Link
