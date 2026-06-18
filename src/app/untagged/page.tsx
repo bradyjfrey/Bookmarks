@@ -10,7 +10,7 @@ export default async function Page() {
   const rows = listBookmarks({ filter: "untagged", includePrivate, limit: 200 });
   return (
     <Shell crumb="Untagged">
-      <BookmarkList rows={rows} canEdit={includePrivate} empty="No untagged bookmarks — everything is tagged." />
+      <BookmarkList rows={rows} canEdit={includePrivate} empty="No untagged bookmarks. Everything is tagged." />
     </Shell>
   );
 }

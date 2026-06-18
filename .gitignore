@@ -41,7 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 # --- Bookmarks-specific ---
-mockups/_shot-*.png
 *pinboard_export*.json
 /data/
 .devenv/

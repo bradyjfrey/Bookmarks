@@ -24,7 +24,7 @@ export default async function Page({
       <BookmarkList
         rows={rows}
         canEdit={includePrivate}
-        empty={q ? "No matches. Search covers titles, URLs, notes, and tags — in any language." : "Type a query above to search."}
+        empty={q ? "No matches. Search covers titles, URLs, notes, and tags, in any language." : "Type a query above to search."}
       />
     </Shell>
   );
