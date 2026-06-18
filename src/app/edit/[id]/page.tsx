@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import { Shell } from "@/components/Shell";
 import { BookmarkForm } from "@/components/BookmarkForm";
 import { getCurrentUser } from "@/lib/auth";
-import { getBookmark } from "@/lib/queries";
+import { getBookmark, getTagNames } from "@/lib/queries";
 import { splitTags } from "@/lib/format";
 import { updateBookmarkAction, deleteBookmarkAction } from "@/lib/actions";
 
@@ -22,6 +22,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           deleteAction={deleteBookmarkAction}
           id={b.id}
           submitLabel="Save Changes"
+          allTags={getTagNames()}
           defaults={{
             url: b.url,
             title: b.title,

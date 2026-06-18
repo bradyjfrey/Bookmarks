@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Trash } from "./icons";
+import { TagInput } from "./TagInput";
 
 const inputCls = "w-full bg-surface border border-border rounded-md px-3 text-sm text-ink focus-accent";
 
@@ -42,12 +43,14 @@ export function BookmarkForm({
   defaults = {},
   submitLabel,
   id,
+  allTags = [],
 }: {
   action: (formData: FormData) => void | Promise<void>;
   deleteAction?: (formData: FormData) => void | Promise<void>;
   defaults?: FormDefaults;
   submitLabel: string;
   id?: number;
+  allTags?: string[];
 }) {
   return (
     <div className="max-w-2xl space-y-5">
@@ -62,8 +65,8 @@ export function BookmarkForm({
         <Field label="Description" hint="optional">
           <textarea name="description" rows={3} defaultValue={defaults.description ?? ""} className={`${inputCls} py-2`} />
         </Field>
-        <Field label="Tags" hint="space or comma separated">
-          <input name="tags" defaultValue={defaults.tags ?? ""} placeholder="reference, design" className={`${inputCls} h-10`} />
+        <Field label="Tags" hint="type to autocomplete existing tags">
+          <TagInput allTags={allTags} defaultTags={defaults.tags ? defaults.tags.split(/\s+/).filter(Boolean) : []} />
         </Field>
         <div className="flex items-center gap-6 pt-1">
           <Switch name="private" label="Private" defaultChecked={defaults.private} />

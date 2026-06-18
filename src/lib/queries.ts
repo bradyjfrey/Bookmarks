@@ -111,6 +111,12 @@ export function countBookmarksByTag(tagName: string, includePrivate: boolean): n
   );
 }
 
+export function getTagNames(): string[] {
+  return (raw.prepare("SELECT name FROM tags ORDER BY name").all() as { name: string }[]).map(
+    (r) => r.name,
+  );
+}
+
 export function getAllTags() {
   return raw
     .prepare(

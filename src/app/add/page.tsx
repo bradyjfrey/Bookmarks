@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { Shell } from "@/components/Shell";
 import { BookmarkForm } from "@/components/BookmarkForm";
 import { getCurrentUser } from "@/lib/auth";
+import { getTagNames } from "@/lib/queries";
 import { createBookmarkAction } from "@/lib/actions";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +21,7 @@ export default async function Page({
           action={createBookmarkAction}
           defaults={{ url: sp.url, title: sp.title }}
           submitLabel="Save Bookmark"
+          allTags={getTagNames()}
         />
       </div>
     </Shell>
