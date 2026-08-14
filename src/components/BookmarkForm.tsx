@@ -20,9 +20,7 @@ function Switch({ name, label, defaultChecked }: { name: string; label: string; 
   return (
     <label className="flex items-center gap-2 cursor-pointer select-none">
       <input type="checkbox" name={name} defaultChecked={defaultChecked} className="peer sr-only" />
-      <span className="relative inline-block w-9 h-5 rounded-full bg-border peer-checked:bg-cubs transition-colors">
-        <span className="absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-surface shadow transition-transform peer-checked:translate-x-4" />
-      </span>
+      <span className="relative inline-block w-9 h-5 rounded-full bg-border peer-checked:bg-cubs transition-colors after:absolute after:left-0.5 after:top-0.5 after:w-4 after:h-4 after:rounded-full after:bg-surface after:shadow after:transition-transform peer-checked:after:translate-x-4" />
       <span className="text-sm text-ink">{label}</span>
     </label>
   );

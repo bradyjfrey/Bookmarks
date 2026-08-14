@@ -29,7 +29,7 @@ export async function createBookmarkAction(formData: FormData) {
     starred: on(formData, "starred"),
   });
   revalidateAll();
-  redirect("/");
+  redirect(/^https?:\/\//i.test(url) ? url : "/");
 }
 
 export async function updateBookmarkAction(formData: FormData) {
