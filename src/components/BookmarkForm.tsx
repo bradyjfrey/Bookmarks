@@ -42,6 +42,7 @@ export function BookmarkForm({
   submitLabel,
   id,
   allTags = [],
+  force = false,
 }: {
   action: (formData: FormData) => void | Promise<void>;
   deleteAction?: (formData: FormData) => void | Promise<void>;
@@ -49,11 +50,13 @@ export function BookmarkForm({
   submitLabel: string;
   id?: number;
   allTags?: string[];
+  force?: boolean;
 }) {
   return (
     <div className="max-w-2xl space-y-5">
       <form id="bm-form" action={action} className="space-y-5">
         {id != null && <input type="hidden" name="id" value={id} />}
+        {force && <input type="hidden" name="force" value="on" />}
         <Field label="URL">
           <input name="url" type="url" required defaultValue={defaults.url} placeholder="https://…" className={`${inputCls} h-10`} />
         </Field>

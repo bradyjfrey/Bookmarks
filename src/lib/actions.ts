@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import * as m from "@/lib/mutations";
+import { findBookmarkByUrl } from "@/lib/queries";
 import { fetchMetadata } from "@/lib/metadata";
 
 const str = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
@@ -13,6 +14,16 @@ export async function createBookmarkAction(formData: FormData) {
   await requireUser();
   const url = str(formData, "url");
   if (!url) return;
+  if (!on(formData, "force") && findBookmarkByUrl(url)) {
+    const params = new URLSearchParams({ url });
+    for (const k of ["title", "description", "tags"] as const) {
+      const v = str(formData, k);
+      if (v) params.set(k, v);
+    }
+    if (on(formData, "private")) params.set("private", "1");
+    if (on(formData, "starred")) params.set("starred", "1");
+    redirect(`/add?${params}`);
+  }
   let title: string | null = str(formData, "title") || null;
   let description: string | null = str(formData, "description") || null;
   if (!title || !description) {

@@ -115,6 +115,13 @@ export function countBookmarksByTag(tagName: string, includePrivate: boolean): n
   );
 }
 
+export function findBookmarkByUrl(url: string): { id: number; title: string | null; created_at: number } | null {
+  const row = raw
+    .prepare("SELECT id, title, created_at FROM bookmarks WHERE url = ? AND deleted_at IS NULL")
+    .get(url) as { id: number; title: string | null; created_at: number } | undefined;
+  return row ?? null;
+}
+
 export function getTagNames(): string[] {
   return (raw.prepare("SELECT name FROM tags ORDER BY name").all() as { name: string }[]).map(
     (r) => r.name,
